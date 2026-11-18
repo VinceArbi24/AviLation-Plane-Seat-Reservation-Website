@@ -1,0 +1,139 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AviLation - Flight Reservation</title>
+</head>
+
+<body>
+
+    <!-- TOP NAVIGATION BAR -->
+    <header class="header">
+
+        <!-- LEFT: LOGO -->
+        <div class="logo">
+            <h2>✈ AviLation</h2>
+        </div>
+
+        <!-- CENTER: NAVIGATION LINKS -->
+        <nav class="navigation">
+            <a href="#home">Home</a>
+            <a href="booking.html">Flights</a>
+            <a href="route.html">Route</a>
+            <a href="history.html">History</a>
+            <a href="#about">About Us</a>
+            <a href="#contact">Contact</a>
+
+        </nav>
+
+        <!-- RIGHT: LOGIN BUTTON -->
+        <div class="login">
+            <a href="login.html">Login</a>
+            <a href="signup.html">Signup</a>
+            
+        </div>
+
+    </header>
+
+
+    <!-- MAIN HERO SECTION -->
+    <main>
+
+        <section class="hero" id="home">
+
+            <!-- LEFT SIDE: HEADING AND DESCRIPTION -->
+            <div class="hero-content">
+
+                <h1>
+                    YOUR JOURNEY<br>
+                    STARTS HERE<br>
+                    WITH AVILATION
+                </h1>
+
+                <p>
+                    Discover new destinations and experience
+                    convenient flight reservations with AviLation.
+                    Choose your preferred flights and seats
+                    for a comfortable journey.
+                </p>
+
+                <div class="hero-buttons">
+                    <a href="#flights">Book Your Flight</a>
+                    <a href="#about">Learn More</a>
+                </div>
+
+            </div>
+
+
+            <!-- RIGHT SIDE: AIRPLANE IMAGE -->
+            <div class="hero-image">
+
+                <img src="images/airplane.png"
+                     alt="AviLation Airplane">
+
+            </div>
+
+        </section>
+
+
+        <!-- FLIGHT RESERVATION -->
+        <section class="flight-booking" id="flights">
+
+            <h2>Book Your Flight</h2>
+
+            <form>
+
+                <label>Departure</label>
+                <input type="text"
+                       placeholder="Enter departure city">
+
+                <label>Destination</label>
+                <input type="text"
+                       placeholder="Enter destination">
+
+                <label>Departure Date</label>
+                <input type="date">
+
+                <label>Passengers</label>
+                <input type="number" min="1" value="1">
+
+                <button type="submit">Search Flights</button>
+
+            </form>
+
+        </section>
+
+
+        <!-- ABOUT US -->
+        <section id="about">
+
+            <h2>About AviLation</h2>
+
+            <p>
+                AviLation is an airplane seat reservation
+                website that makes flight booking simple
+                and convenient for everyone.
+            </p>
+
+        </section>
+
+
+    </main>
+
+
+    <!-- FOOTER -->
+    <footer id="contact">
+
+        <h3>AviLation</h3>
+
+        <p>Your Journey, Your Destination.</p>
+
+        <p>© 2026 AviLation. All Rights Reserved.</p>
+
+    </footer>
+
+</body>
+</html>
+

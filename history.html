@@ -1,0 +1,84 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AviLiation - Booking History</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="site-header">
+        <div class="header-inner">
+
+            <a href="index.html" class="brand">
+                ✈ AviLiation
+            </a>
+
+            <nav class="main-nav">
+                <a href="booking.html">Book Flight</a>
+                <a href="seats.html">Seat Reservation</a>
+                <a href="history.html" class="active">
+                    Booking History
+                </a>
+            </nav>
+
+            <div class="user-chip">
+                My Account
+            </div>
+
+        </div>
+    </header>
+
+
+    <!-- BOOKING HISTORY -->
+    <main>
+
+        <section class="history-section">
+
+            <h2>My Booking History</h2>
+
+            <p class="sub">
+                View all your previous and upcoming flight reservations.
+            </p>
+
+            <!-- BOOKINGS WILL APPEAR HERE -->
+            <div id="bookingHistory">
+
+                <div class="empty-history">
+                    <h3>No Bookings Yet</h3>
+
+                    <p>
+                        You haven't made any flight reservations.
+                        Start planning your next journey with AviLiation!
+                    </p>
+
+                    <a href="booking.html" class="btn">
+                        Book a Flight
+                    </a>
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- FOOTER -->
+    <footer>
+        <p>
+            &copy; 2026 AviLiation.
+            All Rights Reserved.
+        </p>
+    </footer>
+
+    <script src="js/history.js"></script>
+
+</body>
+</html>

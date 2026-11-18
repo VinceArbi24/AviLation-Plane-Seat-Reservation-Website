@@ -1,0 +1,4 @@
+/* login.html and signup.html load "style.css" from this folder.
+   The real stylesheet lives in css/style.css, so we point to it here.
+   That way you only ever edit one file. */
+@import url("css/style.css");
