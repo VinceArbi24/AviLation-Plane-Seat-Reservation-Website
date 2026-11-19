@@ -87,6 +87,63 @@ function aviLationGlobe() {
   function isLand(lon,lat){let l=false;for(const p of LAND){if(pip(lon,lat,p)){l=true;break;}}if(!l)return false;for(const w of WATER){if(pip(lon,lat,w))return false;}return true;}
   
 
+
+  /* ---------- styles the globe needs (injected, so an old style.css cannot break it) ---------- */
+  var css = document.createElement('style');
+  css.textContent =
+    '.hero-image.has-globe{overflow:visible}' +
+    '.hero-image.has-globe::before,.hero-image.has-globe>img{display:none!important}' +
+    '.hero-image.has-globe>canvas{position:relative;display:block;width:100%;height:100%}' +
+    '.hero-image.has-globe .globe-chips{position:absolute;left:0;right:0;bottom:-6px;z-index:2;display:flex;justify-content:center;flex-wrap:wrap;gap:8px}' +
+    '.globe-chips button{font:600 .8rem/1 Inter,system-ui,sans-serif;padding:8px 14px;border-radius:999px;border:1px solid #3F4147;background:rgba(43,45,49,.9);color:#F2F3F5;cursor:pointer;transition:background .2s,border-color .2s,transform .2s,box-shadow .2s}' +
+    '.globe-chips button:hover{border-color:#8995FF;transform:translateY(-1px)}' +
+    '.globe-chips button[aria-pressed="true"]{background:#5865F2;border-color:#5865F2;color:#fff;box-shadow:0 0 18px rgba(88,101,242,.55)}' +
+    '.globe-chips button:focus-visible{outline:2px solid #8995FF;outline-offset:2px}' +
+    '@media(max-width:640px){.globe-chips{gap:6px}.globe-chips button{padding:6px 11px;font-size:.74rem}}' +
+    /* scroll plane */
+    '.flight-progress{position:fixed;left:0;right:0;bottom:0;height:34px;z-index:50;pointer-events:none}' +
+    '.flight-progress .fp-line{position:absolute;left:16px;right:16px;bottom:12px;border-top:2px dashed rgba(137,149,255,.35)}' +
+    '.flight-progress .fp-trail{position:absolute;left:16px;bottom:12px;height:2px;width:0;background:linear-gradient(90deg,rgba(88,101,242,0),#8995FF);box-shadow:0 0 10px #5865F2}' +
+    '.flight-progress .fp-plane{position:absolute;left:16px;bottom:3px;width:26px;height:20px;margin-left:-13px;filter:drop-shadow(0 0 6px rgba(88,101,242,.9))}' +
+    '.flight-progress .fp-end{position:absolute;right:16px;bottom:7px;width:10px;height:10px;border-radius:50%;background:#57D9A8;box-shadow:0 0 12px #57D9A8}' +
+    /* sections fade up as you scroll */
+    '.av-reveal{opacity:0;transform:translateY(34px);transition:opacity .7s ease,transform .7s ease}' +
+    '.av-reveal.av-in{opacity:1;transform:none}' +
+    '@media(prefers-reduced-motion:reduce){.av-reveal{opacity:1;transform:none;transition:none}}';
+  document.head.appendChild(css);
+
+  /* ---------- scroll: plane along the bottom edge, globe spins, sections fade in ---------- */
+  var scrollP = 0, scrollSmooth = 0;
+  var fp = document.createElement('div');
+  fp.className = 'flight-progress';
+  fp.setAttribute('aria-hidden', 'true');
+  fp.innerHTML = '<div class="fp-line"></div><div class="fp-trail"></div><div class="fp-end"></div>' +
+    '<svg class="fp-plane" viewBox="0 0 26 20"><path fill="#F2F3F5" d="M25 10 17 6.5 12 0H9.5l2.6 6.5H5.8L3.6 3.6H1.5L2.8 10 1.5 16.4h2.1l2.2-2.9h6.3L9.5 20H12l5-6.5 8-3.5z"/></svg>';
+  document.body.appendChild(fp);
+  var fpPlane = fp.querySelector('.fp-plane'), fpTrail = fp.querySelector('.fp-trail');
+
+  function onScroll() {
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    scrollP = max > 0 ? Math.min(1, Math.max(0, window.pageYOffset / max)) : 0;
+    var w = Math.max(0, window.innerWidth - 32);
+    var x = scrollP * w;
+    fpPlane.style.transform = 'translateX(' + x + 'px)';
+    fpTrail.style.width = Math.max(0, x - 8) + 'px';
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  onScroll();
+
+  if ('IntersectionObserver' in window) {
+    var revealIO = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('av-in'); revealIO.unobserve(en.target); } });
+    }, { threshold: 0.12 });
+    Array.prototype.forEach.call(document.querySelectorAll('.flight-booking, #about, footer, .hero-content'), function (el) {
+      el.classList.add('av-reveal');
+      revealIO.observe(el);
+    });
+  }
+
   var DEG = Math.PI / 180;
   var DOT_COUNT = 20000;     // points on the sphere; lower this if a phone feels slow
   var CYCLE = 8;             // seconds for one flight
@@ -297,7 +354,8 @@ function aviLationGlobe() {
   function stepCamera(time, dt) {
     var t = route.om > 1.8 ? 0.5 : 0.6;
     var target = norm(slerp(route.a, route.b, t, route.om));
-    var sway = reduceMotion ? 0 : Math.sin(time * 0.35) * 0.05;
+    scrollSmooth += (scrollP - scrollSmooth) * (reduceMotion ? 1 : 1 - Math.exp(-dt * 4));
+    var sway = (reduceMotion ? 0 : Math.sin(time * 0.35) * 0.05) + scrollSmooth * 1.1;
     var cs = Math.cos(sway), sn = Math.sin(sway);
     target = [target[0] * cs - target[1] * sn, target[0] * sn + target[1] * cs, target[2]];
     var k = reduceMotion ? 1 : 1 - Math.exp(-dt * 3.2);
