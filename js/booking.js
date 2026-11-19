@@ -30,6 +30,16 @@
     cabinInput.value = draft.cabin || 'Economy';
   }
 
+  /* Trip typed on the home page (js/globe.js saves it there) */
+  var prefill = AL.read('aviliation_prefill', null);
+  if (prefill && !draft) {
+    fromInput.value = prefill.from || '';
+    toInput.value = prefill.to || '';
+    dateInput.value = prefill.date || '';
+    paxInput.value = prefill.passengers || 1;
+  }
+  if (prefill) { AL.remove('aviliation_prefill'); }
+
   form.addEventListener('submit', function (event) {
     event.preventDefault();
     AL.clearMessage(msg);
