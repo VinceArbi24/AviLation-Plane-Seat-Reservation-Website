@@ -9,7 +9,7 @@
    - Pick a destination (type it in the form, or tap a chip under the globe)
      and the globe turns towards it while the plane sets off again.
 
-   To switch it on, add this line before </body> in index.html:
+   To switch it on, add this line in index.html (in <head> or before </body>):
 
        <script src="js/globe.js"></script>
 
@@ -19,7 +19,7 @@
    No libraries needed. If this script fails to load, the page falls back to
    the plain image from the HTML, so nothing breaks.
    ========================================================================== */
-(function () {
+function aviLationGlobe() {
   'use strict';
 
   var host = document.querySelector('.hero-image');
@@ -593,4 +593,12 @@
       window.location.href = 'booking.html';
     });
   }
-})();
+}
+
+/* Works whether the <script> tag is in <head> or before </body> */
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', aviLationGlobe);
+} else {
+  aviLationGlobe();
+}
+
